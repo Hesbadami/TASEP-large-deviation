@@ -19,6 +19,6 @@ The population dynamics can be implemented using a diffusion Monte Carlo algorit
 
 3. After the cloning step, the population is rescaled to its initial size by randomly resampling agents.
 
-![cloning](images/cloning.png)
+<img src="images/1k10050tasep.png" alt="1k10050tasep" width="50%"/>
 
-The usecase and results, alongside the analytical solutions (for small systems with few possible configuratoins) for comparison and validation's sake are provided in the notebook.
+<img src="images/42tasep.png" alt="42comparison" width="100%"/>
