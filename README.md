@@ -4,7 +4,7 @@ In this code, I provide the method first proposed by [Giardinà, Kurchan, and Pe
 
 The Totally Asymmetric Exclusion Process is defined on a 1D lattice subject to periodic boundary conditions. Particles jump stochastically to a right empty nearest neighbor at a rate:
 
-k(x) = 1 + (e<sup>α</sup>)/N × [number of particles in x with a free site to their right]
+k(x) = 1 + (e<sup>α</sup>-1)/N × [number of particles in x with a free site to their right]
 
 ![Tasep](images/tasep.jpg)
 
