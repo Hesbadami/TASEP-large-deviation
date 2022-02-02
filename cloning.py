@@ -4,7 +4,7 @@ import math
 
 
 # defining cloning factor
-def k(config, s, L):
+def k(config, s, L, alpha):
     e = 1.0
     for i in range(L):
         if config[i % L] == 1 and config[(i+1) % L] == 0:
@@ -13,7 +13,7 @@ def k(config, s, L):
 
 
 # defining the biased dynamics
-def update(config, s, L):
+def update(config, s, L, alpha):
     i1 = numpy.where(numpy.asarray(config) == 1)[0]  # Full slots
     i0 = numpy.where(numpy.asarray(config) == 0)[0]  # Empty slots
     movable = []
@@ -21,7 +21,7 @@ def update(config, s, L):
         if (i+1) % L in i0:
             # Store the location of movable particles
             movable.append(i)
-    if (1-alpha*len(movable)/L)/k(config, s) > numpy.random.rand():
+    if (1-alpha*len(movable)/L)/k(config, s, L, alpha) > numpy.random.rand():
         # probability of not making a move (1PM)
         pass
     else:
@@ -52,7 +52,7 @@ def main(s, alpha, T, L, M, clon):
 
         for i in range(clon):
             # the agent is to be replaced by G copies
-            G = int(k(c[i], s, L) + numpy.random.random())
+            G = int(k(c[i], s, L, alpha) + numpy.random.random())
 
             if G == 0:
                 # one copy chosen at random replaces the current copy
@@ -64,7 +64,7 @@ def main(s, alpha, T, L, M, clon):
                 # uniformly sampled out
                 for _ in range(G):
                     c_temp.append(
-                        update(c[i], s, L)  # do the biased dynamic
+                        update(c[i], s, L, alpha)  # do the biased dynamic
                     )
                 list = random.sample(range(len(c_temp)), G-1)
                 c_temp = numpy.delete(c_temp, list, axis=0)
@@ -76,25 +76,3 @@ def main(s, alpha, T, L, M, clon):
 
     x = [clon/m[i] for i in range(1, len(m))]
     return (-numpy.log(numpy.prod(x))/T)
-
-
-if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-
-    plt.style.use('bmh')
-
-    alpha, T = 1, 1000  # jumping rate, observation time
-    L, M, clon = 4, 2, 10
-
-    mus = []
-    lambdas = numpy.arange(-10, 1, 1)
-    for s in lambdas:
-        mus.append(main(s))
-
-    plt.plot(lambdas, mus)
-    plt.title(
-        f'Simulation - {L} sites, {M} particle(s) - {clon} clones, {T} time'
-    )
-    plt.xlabel(r'$\lambda$')
-    plt.ylabel(r'$\mu(\lambda)$')
-    plt.show()
